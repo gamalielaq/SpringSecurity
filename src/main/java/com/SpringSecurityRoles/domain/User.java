@@ -25,14 +25,17 @@ public class User implements Serializable {
 	private String profileImageUrl;
 	private Date lastLoginDate;
 	private Date getLastLoginDisplay;
-	private String[] roles; //ROLE_USER{read, edit}, ROLE_ADMIN{delete}
+	private String roles; //ROLE_USER{read, edit}, ROLE_ADMIN{delete}
 	private String[] authorities;
 	private boolean isActive;
 	private boolean isNotLocked;
+
+	private Date lastLoginDateDisplay;
+	private Date joinDate;
 	
 	public User() {};
 	
-	public User(Long id, String userId, String firstName, String lastName, String userName, String password, String email, String profileImageUrl, Date lastLoginDate, Date getLastLoginDisplay, String[] roles, String[] authorities, boolean isActive, boolean isNotLocked) {
+	public User(Long id, String userId, String firstName, String lastName, String userName, String password, String email, String profileImageUrl, Date lastLoginDate, Date getLastLoginDisplay, String roles, String[] authorities, boolean isActive, boolean isNotLocked, Date lastLoginDateDisplay, Date joinDate) {
 		this.id = id;
 		this.userId = userId;
 		this.firstName = firstName;
@@ -47,6 +50,9 @@ public class User implements Serializable {
 		this.authorities = authorities;
 		this.isActive = isActive;
 		this.isNotLocked = isNotLocked;
+
+		this.lastLoginDateDisplay = lastLoginDateDisplay;
+		this.joinDate = joinDate;
 	}
 	
 	public Long getId() {
@@ -109,10 +115,10 @@ public class User implements Serializable {
 	public void setGetLastLoginDisplay(Date getLastLoginDisplay) {
 		this.getLastLoginDisplay = getLastLoginDisplay;
 	}
-	public String[] getRoles() {
+	public String getRoles() {
 		return roles;
 	}
-	public void setRoles(String[] roles) {
+	public void setRoles(String roles) {
 		this.roles = roles;
 	}
 	public String[] getAuthorities() {
@@ -133,7 +139,17 @@ public class User implements Serializable {
 	public void setNotLocked(boolean isNotLocked) {
 		this.isNotLocked = isNotLocked;
 	}
-	
-	
+	public Date getLastLoginDateDisplay() {
+        return lastLoginDateDisplay;
+    }
+	public void setLastLoginDateDisplay(Date lastLoginDateDisplay) {
+        this.lastLoginDateDisplay = lastLoginDateDisplay;
+    }
+	public Date getJoinDate() {
+        return joinDate;
+    }
+    public void setJoinDate(Date joinDate) {
+        this.joinDate = joinDate;
+    }
 }
 
