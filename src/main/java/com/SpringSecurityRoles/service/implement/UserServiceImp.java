@@ -52,7 +52,7 @@ public class UserServiceImp implements IUserService, UserDetailsService {
     
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        User user = this.userRepository.findUserByUsername(username);
+        User user = this.userRepository.findUserByUserName(username);
 
         if (user == null) {
             LOGGER.error(UserImplConstant.USER_NOT_FOUND_BY_USERNAME + username);
@@ -116,7 +116,7 @@ public class UserServiceImp implements IUserService, UserDetailsService {
 
     @Override
     public User findUserByUserName(String username) {
-        return userRepository.findUserByUsername(username);
+        return userRepository.findUserByUserName(username);
     }
 
     @Override

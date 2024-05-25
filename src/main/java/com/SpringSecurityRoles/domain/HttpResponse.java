@@ -1,53 +1,67 @@
 package com.SpringSecurityRoles.domain;
 
+import java.util.Date;
+
 import org.springframework.http.HttpStatus;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 public class HttpResponse {
-	private int code; // 200, 201, 400
-	private HttpStatus httpStatus;
-	private String reason;
-	private String message;
+	 @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "MM-dd-yyyy hh:mm:ss", timezone = "America/Lima")
+    private Date timeStamp;
+    private int code; // 200, 201, 400, 500
+    private HttpStatus httpStatus;
+    private String reason;
+    private String message;
 
-	public HttpResponse() {};
+    public HttpResponse() {}
+    
+    public HttpResponse(int code, HttpStatus httpStatus, String reason, String message) {
+        this.timeStamp = new Date();
+        this.code = code;
+        this.httpStatus = httpStatus;
+        this.reason = reason;
+        this.message = message;
+    }
 
-	public HttpResponse(int code, HttpStatus httpStatus, String reason, String message) {
-		super();
-		this.code = code;
-		this.httpStatus = httpStatus;
-		this.reason = reason;
-		this.message = message;
-	}
+    public Date getTimeStamp() {
+        return timeStamp;
+    }
 
-	public int getCode() {
-		return code;
-	}
+    public void setTimeStamp(Date timeStamp) {
+        this.timeStamp = timeStamp;
+    }
 
-	public void setCode(int code) {
-		this.code = code;
-	}
+    public int getCode() {
+        return code;
+    }
 
-	public HttpStatus getHttpStatus() {
-		return httpStatus;
-	}
+    public void setCode(int httpStatusCode) {
+        this.code = httpStatusCode;
+    }
 
-	public void setHttpStatus(HttpStatus httpStatus) {
-		this.httpStatus = httpStatus;
-	}
+    public HttpStatus getHttpStatus() {
+        return httpStatus;
+    }
 
-	public String getReason() {
-		return reason;
-	}
+    public void setHttpStatus(HttpStatus httpStatus) {
+        this.httpStatus = httpStatus;
+    }
 
-	public void setReason(String reason) {
-		this.reason = reason;
-	}
+    public String getReason() {
+        return reason;
+    }
 
-	public String getMessage() {
-		return message;
-	}
+    public void setReason(String reason) {
+        this.reason = reason;
+    }
 
-	public void setMessage(String message) {
-		this.message = message;
-	}
+    public String getMessage() {
+        return message;
+    }
+
+    public void setMessage(String message) {
+        this.message = message;
+    }
 
 }
