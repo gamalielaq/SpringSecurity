@@ -39,6 +39,7 @@ spring:
 # #[opcional]Imprime en tu consola las instrucciones hechas en tu base de datos.
 # spring.jpa.show-sql = true
 
+
 # #spring.jpa.hibernate.ddl-auto = create-drop
 # spring.jpa.generate-ddl = false
 

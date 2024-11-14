@@ -69,6 +69,8 @@ public class ExceptionHandlig implements ErrorController {
 		return this.createHttpResponse(HttpStatus.BAD_REQUEST, exception.getMessage());
 	}
 	
+
+	// indica que este método va a manejar las excepciones de tipo EmailExistException.
 	@ExceptionHandler(EmailNotFoundException.class)
 	public ResponseEntity<HttpResponse> emailNotFoundException(EmailNotFoundException exception) {
 		return this.createHttpResponse(HttpStatus.BAD_REQUEST, exception.getMessage());
