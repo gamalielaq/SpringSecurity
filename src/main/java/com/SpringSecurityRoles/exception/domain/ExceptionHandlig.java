@@ -19,11 +19,10 @@ import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.servlet.NoHandlerFoundException;
 
 import com.SpringSecurityRoles.domain.HttpResponse;
 import com.auth0.jwt.exceptions.TokenExpiredException;
-
-
 @RestControllerAdvice
 public class ExceptionHandlig implements ErrorController {
 	//Clase para manejar todas la excepciones
@@ -86,10 +85,10 @@ public class ExceptionHandlig implements ErrorController {
 		return this.createHttpResponse(HttpStatus.BAD_REQUEST, exception.getMessage());
 	}
 	
-//	@ExceptionHandler(NoHandlerFoundException.class) //  metodo para controlar una url no mapeada
-//	public ResponseEntity<HttpResponse> methodNotSupportedFoundException(NoHandlerFoundException e) {
-//		return this.createHttpResponse(HttpStatus.BAD_REQUEST, "Esta pagina no fue encontrada");
-//	}
+	@ExceptionHandler(NoHandlerFoundException.class) //  metodo para controlar una url no mapeada
+	public ResponseEntity<HttpResponse> methodNotSupportedFoundException(NoHandlerFoundException e) {
+		return this.createHttpResponse(HttpStatus.BAD_REQUEST, "Esta pagina no fue encontrada");
+	}
 	
 	@ExceptionHandler(HttpRequestMethodNotSupportedException.class)
 	public ResponseEntity<HttpResponse> methodNotSupportedFoundException(HttpRequestMethodNotSupportedException exception) {
@@ -127,4 +126,9 @@ public class ExceptionHandlig implements ErrorController {
 						),
 				httpStatus);
 	}
+
+	// @Override
+	// public String getErrorPath() {
+	// 	return ERROR_PATH;
+	// }
 }
