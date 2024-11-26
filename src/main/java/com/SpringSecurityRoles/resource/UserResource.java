@@ -1,10 +1,11 @@
 package com.SpringSecurityRoles.resource;
 
+import java.time.LocalDateTime;
+
 import javax.mail.MessagingException;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -13,14 +14,13 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
-import com.SpringSecurityRoles.constants.SecurityConstant;
 import com.SpringSecurityRoles.domain.User;
 import com.SpringSecurityRoles.domain.UserPrincipal;
 import com.SpringSecurityRoles.exception.domain.EmailExistException;
 import com.SpringSecurityRoles.exception.domain.ExceptionHandlig;
 import com.SpringSecurityRoles.exception.domain.UserNameExistException;
 import com.SpringSecurityRoles.exception.domain.UserNotFoundException;
+import com.SpringSecurityRoles.response.LoginResponse;
 import com.SpringSecurityRoles.service.IUserService;
 import com.SpringSecurityRoles.utility.JWTTokenProvider;
 
@@ -32,20 +32,36 @@ public class UserResource extends ExceptionHandlig {
 	@Autowired
     private IUserService userService;
 
-    // @Autowired
-    // private AuthenticationManager authenticationManager;
+    @Autowired
+    private AuthenticationManager authenticationManager;
 
-    // @Autowired
-    // private JWTTokenProvider jwtTokenProvider;
+    @Autowired
+    private JWTTokenProvider jwtTokenProvider;
 
-    // @PostMapping("/login")
-    // public ResponseEntity<User> login(@RequestBody User user) {
-    //     // this.authenticate(user.getUserName(), user.getPassword());
-    //     User loginUser = userService.findUserByUserName(user.getUserName());
-    //     UserPrincipal userPrincipal = new UserPrincipal(loginUser);
-    //     // HttpHeaders jwtHeader = getJwtHeader(userPrincipal);
-    //     return new ResponseEntity<>(loginUser, jwtHeader, HttpStatus.OK);
-    // }
+       @PostMapping("/login")
+    public ResponseEntity<LoginResponse> login(@RequestBody User user) {
+        // Autenticación del usuario
+        this.authenticate(user.getUserName(), user.getPassword());
+
+        // Obtener el usuario autenticado
+        User loginUser = userService.findUserByUserName(user.getUserName());
+
+        // Generar el token JWT
+        UserPrincipal userPrincipal = new UserPrincipal(loginUser);
+
+        String accessToken = this.jwtTokenProvider.generateJwtToken(userPrincipal);
+        String refreshToken = "";
+
+        LoginResponse response = new LoginResponse(
+            accessToken,
+            refreshToken,
+            loginUser.getUserName(),
+            loginUser.getRoles(),
+            loginUser.getAuthorities(),
+            LocalDateTime.now().plusHours(2)
+        );
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
 
     @PostMapping("/register")
     public ResponseEntity<User> register(@RequestBody User user) throws UserNotFoundException, UserNameExistException, EmailExistException, MessagingException {
@@ -66,6 +82,6 @@ public class UserResource extends ExceptionHandlig {
     // }
 
     private  void authenticate(String username, String password) {
-        // this.authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username, password));
+        this.authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username, password));
     }
 }
