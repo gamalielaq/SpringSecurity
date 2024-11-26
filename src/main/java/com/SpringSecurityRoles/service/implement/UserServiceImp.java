@@ -33,7 +33,8 @@ import com.SpringSecurityRoles.service.LoginAttemptService;
 
 @Service
 @Transactional
-@Qualifier("userDetailsService")
+@Qualifier("userDetailsService") // spring registrar en su contenedor la clase UserServiceImp con el nombre de userDetailsService
+
 public class UserServiceImp implements IUserService, UserDetailsService {
     
     private Logger LOGGER = LoggerFactory.getLogger(getClass());
@@ -104,8 +105,8 @@ public class UserServiceImp implements IUserService, UserDetailsService {
         userRepository.save(user);
 
         LOGGER.info(password);
-        LOGGER.info("Nuevo usuario password: ", password);
-        this.emailService.sendNewPasswordEmail(firstname, password, email);
+        LOGGER.info("Contraseña: {}", password);
+        // this.emailService.sendNewPasswordEmail(firstname, password, email);
         return user;
     }
 
