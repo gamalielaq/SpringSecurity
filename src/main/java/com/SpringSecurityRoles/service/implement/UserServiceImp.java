@@ -62,7 +62,7 @@ public class UserServiceImp implements IUserService, UserDetailsService {
         	this.validateLoginAttempt(user);
             user.setLastLoginDateDisplay(user.getLastLoginDate());
             user.setLastLoginDate(new Date());
-            this.userRepository.save(user);
+            this.userRepository.save(user); //Guardamos el usuario cada vez que intenta iniciar sesión
             UserPrincipal userPrincipal = new UserPrincipal(user);
             LOGGER.info(UserImplConstant.FOUND_USER_BY_USERNAME + username);
             return userPrincipal;
@@ -71,10 +71,10 @@ public class UserServiceImp implements IUserService, UserDetailsService {
 
     private void validateLoginAttempt(User user){
     	if(user.isNotLocked()) {
-    		if(this.loginAttemptService.hasExceedMaxAttempts(user.getUserName())) { // 5 intentos de inicio de sesión
+    		if(this.loginAttemptService.hasExceedMaxAttempts(user.getUserName())) { // 3 intentos de inicio de sesión
     			user.setNotLocked(false);
     		} else {
-    			user.setNotLocked(true);    			
+    			user.setNotLocked(true);
     		}
     	} else {
     		this.loginAttemptService.evicuserFromLoginAttempCache(user.getUserName());
@@ -105,7 +105,7 @@ public class UserServiceImp implements IUserService, UserDetailsService {
         userRepository.save(user);
 
         LOGGER.info(password);
-        LOGGER.info("Contraseña: {}", password);
+        LOGGER.info("Esta es mi Contraseña: {}", password);
         // this.emailService.sendNewPasswordEmail(firstname, password, email);
         return user;
     }

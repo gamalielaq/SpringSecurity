@@ -11,7 +11,7 @@ import com.google.common.cache.LoadingCache;
 
 @Service
 public class LoginAttemptService {
-	private static final int MAXIMUN_NUMBER_OF_ATTEMPS = 5;
+	private static final int MAXIMUN_NUMBER_OF_ATTEMPS = 3;
 	private static final int ATTEMP_INCREMENT = 1;
 	private LoadingCache<String, Integer> loginAttempCache;
 
@@ -41,7 +41,7 @@ public class LoginAttemptService {
 	
 	public Boolean hasExceedMaxAttempts(String username) {
 		try {
-			return loginAttempCache.get(username) >= MAXIMUN_NUMBER_OF_ATTEMPS;
+			return loginAttempCache.get(username) == MAXIMUN_NUMBER_OF_ATTEMPS;
 		} catch (ExecutionException e) {
 			e.printStackTrace();
 		}

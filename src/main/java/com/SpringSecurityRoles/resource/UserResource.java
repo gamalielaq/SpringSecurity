@@ -38,7 +38,7 @@ public class UserResource extends ExceptionHandlig {
     @Autowired
     private JWTTokenProvider jwtTokenProvider;
 
-       @PostMapping("/login")
+    @PostMapping("/login")
     public ResponseEntity<LoginResponse> login(@RequestBody User user) {
         // Autenticación del usuario
         this.authenticate(user.getUserName(), user.getPassword());

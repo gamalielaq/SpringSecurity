@@ -38,8 +38,12 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
             response.setStatus(HttpStatus.OK.value()); // No hcemos nada
         } else {
             String autorizationHeader = request.getHeader(HttpHeaders.AUTHORIZATION);
+
+            // Verificar si el encabezado de autorización está presente y si contiene el prefijo adecuado para el token JWT.
+            // Si no está presente o no empieza con el prefijo esperado (ej. "Bearer "), simplemente pasamos la solicitud al siguiente filtro
+            // sin hacer ninguna validación de JWT. Esto permite que las rutas públicas puedan ser accedidas sin necesidad de un token.
             if (autorizationHeader == null || !autorizationHeader.startsWith(SecurityConstant.TOKEN_PREFIX)) {
-                filterChain.doFilter(request, response); //--> aca estaba mi error
+                filterChain.doFilter(request, response); //--> Permite pasar la solicitud al siguiente filtro sin validación de JWT
                 return;
             }
             String token = autorizationHeader.substring(SecurityConstant.TOKEN_PREFIX.length());
